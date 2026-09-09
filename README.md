@@ -21,11 +21,11 @@ Language: **Ada 2023** (ISO/IEC 8652:2023), compiled with GNAT (`-gnat2022`).
 | Concern | Approach | Notes |
 | --- | --- | --- |
 | **Initial distance** | $d_{ij}=\|X_i-X_j\|^2$ | Squared Euclidean on singletons |
-| **Merge cost** | $\Delta=(n_i n_j)/(n_i+n_j)\,\|\mu_i-\mu_j\|^2$ | ESS increase |
+| **Merge cost** | $\Delta=\frac{n_i n_j}{n_i+n_j}\,\|\mu_i-\mu_j\|^2$ | ESS increase |
 | **Update** | Lance–Williams Ward $\alpha_i,\alpha_j,\beta,\gamma=0$ | $d=2\Delta$ under this init |
-| **Dendrogram** | $N-1$ merges `(Left, Right, Height=Δ)` | Leaves `1..N`; merge $m$ → id $N+m$ |
-| **Cut** | First $N-K$ merges → $K$ labels | Compact labels `1..K` |
-| **Complexity** | Naive $O(n^3)$ | Educational; $n\le 64$ |
+| **Dendrogram** | $N-1$ merges `(Left, Right, Height=`$\Delta$`)` | Leaves `1..N`; merge $m \to$ id $N+m$ |
+| **Cut** | First $N-K$ merges $\to K$ labels | Compact labels `1..K` |
+| **Complexity** | Naive $O(n^3)$ | Educational; $n \le 64$ |
 
 ## Features
 
