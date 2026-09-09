@@ -20,12 +20,12 @@ Language: **Ada 2023** (ISO/IEC 8652:2023), compiled with GNAT (`-gnat2022`).
 
 | Concern | Approach | Notes |
 | --- | --- | --- |
-| **Initial distance** | \(d_{ij}=\|X_i-X_j\|^2\) | Squared Euclidean on singletons |
-| **Merge cost** | \(\Delta=(n_i n_j)/(n_i+n_j)\,\|\mu_i-\mu_j\|^2\) | ESS increase |
-| **Update** | Lance–Williams Ward \(\alpha_i,\alpha_j,\beta,\gamma=0\) | \(d=2\Delta\) under this init |
-| **Dendrogram** | \(N-1\) merges `(Left, Right, Height=Δ)` | Leaves `1..N`; merge \(m\) → id \(N+m\) |
-| **Cut** | First \(N-K\) merges → \(K\) labels | Compact labels `1..K` |
-| **Complexity** | Naive \(O(n^3)\) | Educational; \(n\le 64\) |
+| **Initial distance** | $d_{ij}=\|X_i-X_j\|^2$ | Squared Euclidean on singletons |
+| **Merge cost** | $\Delta=(n_i n_j)/(n_i+n_j)\,\|\mu_i-\mu_j\|^2$ | ESS increase |
+| **Update** | Lance–Williams Ward $\alpha_i,\alpha_j,\beta,\gamma=0$ | $d=2\Delta$ under this init |
+| **Dendrogram** | $N-1$ merges `(Left, Right, Height=Δ)` | Leaves `1..N`; merge $m$ → id $N+m$ |
+| **Cut** | First $N-K$ merges → $K$ labels | Compact labels `1..K` |
+| **Complexity** | Naive $O(n^3)$ | Educational; $n\le 64$ |
 
 ## Features
 
@@ -33,7 +33,7 @@ Language: **Ada 2023** (ISO/IEC 8652:2023), compiled with GNAT (`-gnat2022`).
 | --- | --- | --- |
 | Caps | `Max_Points`, `Max_Dims`, `Point`, `Dataset` | Fixed educational limits |
 | Helpers | `Near`, `Squared_Euclidean`, `Centroid` | Geometry |
-| Criterion | `Ward_Delta`, `Ward_Delta_From_Dist` | ESS increase \(\Delta\) |
+| Criterion | `Ward_Delta`, `Ward_Delta_From_Dist` | ESS increase $\Delta$ |
 | Recursion | `Lance_Williams_Ward` | Distance update after a merge |
 | Clustering | `Ward_Linkage`, `Cut_Dendrogram` | Full tree + flat partition |
 | Quality | `Within_Cluster_SSE` | Total within-cluster SSE |
@@ -48,20 +48,20 @@ Named exceptions: `Invalid_Argument`, `Degenerate_Geometry`,
 
 ### Initial distances and merge cost
 
-\[
+$$
 d_{ij}=d(\{X_i\},\{X_j\})=\|X_i-X_j\|^2,
 \qquad
 \Delta(i,j)=\frac{n_i n_j}{n_i+n_j}\,\|\mu_i-\mu_j\|^2.
-\]
+$$
 
-For two singletons, \(\Delta=\tfrac12\|X_i-X_j\|^2\). With squared-Euclidean
-initialization, the Lance–Williams quantity satisfies \(d_{ij}=2\Delta(i,j)\).
+For two singletons, $\Delta=\tfrac12\|X_i-X_j\|^2$. With squared-Euclidean
+initialization, the Lance–Williams quantity satisfies $d_{ij}=2\Delta(i,j)$.
 
 ### Lance–Williams (Ward)
 
-After merging clusters \(i\) and \(j\) into \((ij)\), for any other cluster \(k\):
+After merging clusters $i$ and $j$ into $(ij)$, for any other cluster $k$:
 
-\[
+$$
 \begin{aligned}
 \alpha_i&=\frac{n_i+n_k}{n_i+n_j+n_k},\quad
 \alpha_j=\frac{n_j+n_k}{n_i+n_j+n_k},\\
@@ -69,12 +69,12 @@ After merging clusters \(i\) and \(j\) into \((ij)\), for any other cluster \(k\
 \gamma=0,\\
 d_{(ij)k}&=\alpha_i\,d_{ik}+\alpha_j\,d_{jk}+\beta\,d_{ij}.
 \end{aligned}
-\]
+$$
 
 ### Cutting the dendrogram
 
-A full tree has \(N-1\) merges. Partitioning into \(K\) clusters applies the
-first \(N-K\) merges (equivalently: stops \(K-1\) merges before the root).
+A full tree has $N-1$ merges. Partitioning into $K$ clusters applies the
+first $N-K$ merges (equivalently: stops $K-1$ merges before the root).
 
 ## Usage
 
@@ -132,13 +132,13 @@ Other classical agglomerative schemes also fit the Lance–Williams family:
 
 | Method | Idea | Contrast with Ward |
 | --- | --- | --- |
-| **Single linkage** | \(\min\) inter-point distance | Chaining; not variance |
-| **Complete linkage** | \(\max\) inter-point distance | Compact clusters; different objective |
+| **Single linkage** | $\min$ inter-point distance | Chaining; not variance |
+| **Complete linkage** | $\max$ inter-point distance | Compact clusters; different objective |
 | **UPGMA / average** | Average pairwise distance | No ESS guarantee |
 
 Ward uniquely targets **minimum increase in within-cluster variance**. The
 nearest-neighbor chain algorithm can compute the same clustering faster; this
-package keeps the transparent \(O(n^3)\) loop for clarity.
+package keeps the transparent $O(n^3)$ loop for clarity.
 
 ## References
 
